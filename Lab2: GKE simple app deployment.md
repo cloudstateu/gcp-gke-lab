@@ -8,9 +8,7 @@
 ## LAB Overview
 
 #### This lab will demonstrate:
-* How to create namespace.
 * How to deploy POD and service.
-* How to create healtcheck
 
 
 ## Task 2: Create secret and deploy POD
