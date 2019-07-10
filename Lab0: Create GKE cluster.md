@@ -12,4 +12,4 @@
 ## TASK 1: Create cluster
 1. Open the console.cloud.google.com
 2. From the top-right corner of the console, click the Activate Google Cloud Shell button. 
-3. Enter in command line: 'gcloud container clusters create [CLUSTER_NAME]'
+3. Enter in command line: <code>gcloud container clusters create [CLUSTER_NAME]</code>
