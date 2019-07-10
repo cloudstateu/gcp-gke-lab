@@ -130,52 +130,16 @@ function sendDataToClient(message, client) {
 * <code>docker run -e  DBURL=mongodb://admin:secret@localhost:27017' -e TIMEOUT=5000 -p 3000:3000 berealtime</code>
 
 
-## TASK 2: Create Azure Container Repository and push image
-1. Open Azure Portal. 
-2. Click Create Resource on left menu. 
-3. Click Containers -> Azure Container Registry. 
-4. On the Create container registry page provide the following configurations: 
-* Registry name: student0Xregistry
-* Resource Group: student0X 
-* Location: default as VM 
-* Admin user: Enabled
-* SKU: Standard 
-  
-5. Go to deployed resource and on left menu click Access keys.
-6. Copy user name, password and login server.
-7. Open console and type:
-* <code> docker login –p *passwordCopiedFromPoint6* –u *userNameCopiedFromPoint6* *loginServerFromPoint6* </code> 
-* Tag image with repository by typing in console: 
-* <code> docker tag berealtime *loginServerFromPoint6*/berealtime </code>
+## TASK 2: Create Container Repository and push image
+1. Open terminal.
+2. Run command: <code>gcloud auth configure-docker</code>
+3. Tag image with repository by typing in console: 
+* <code>docker tag berealtime *[HOSTNAME]/[PROJECT-ID]/*/berealtime </code>
+List of the hosts:
+* <code>gcr.io hosts</code> the images in the United States, but the location may change in the future
+* <code>us.gcr.io hosts</code> the image in the United States, in a separate storage bucket from images hosted by gcr.io
+* <code>eu.gcr.io hosts</code> the images in the European Union
+* <code>asia.gcr.io</code> hosts the images in Asia
 8. Push image to repository by typing in console: 
-* <code> docker push *loginServerFromPoint6*/containerapp </code>
-9. After push process is finished, go to portal to Azure Container Registry.
-10.  Open your ACR.
-11. On left menu, in Services section click Repositories.
-12. Check if your image is on the list.
+* <code> docker push *[HOSTNAME]/[PROJECT-ID]/*/berealtime </code>
 
-## TASK 3: Build and deploy system using docker-compose
-1. Open your app directory and create file *docker-compose.yml*
-2. Insert to file code:
-```
-version: '2'
-services:
-  backend:
-    build: .
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mongo
-    environment:
-      DBURL: 'mongodb://admin:secret@mongo:27017'
-      TIMEOUT: 5000
-  mongo:
-    image: mongo
-    ports: 
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secret
-```
-3. Run application using:
-* <code>docker-compose up</code>
