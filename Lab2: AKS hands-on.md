@@ -60,37 +60,38 @@ spec:
 apiVersion: apps/v1beta1 
 kind: Deployment 
 metadata: 
-  name: berealtime 
+ name: berealtime 
 spec: 
-  replicas: 1 
-  template: 
-    metadata: 
-      labels: 
-        app: berealtime 
-    spec: 
-      containers: 
-      - name: berealtime 
-        image: [host]/[project-id]/berealtime 
-        ports: 
-        - containerPort: 3000 
-        env:
-          - name: DBURL
-            value: mongodb://admin:secret@mongo:27017
-          - name: TIMEOUT
-            value: '5000'
-      imagePullSecrets: 
-      - name: SECRET_NAME
+ replicas: 1 
+ template: 
+   metadata: 
+     labels: 
+       app: berealtime 
+   spec: 
+     containers: 
+     - name: berealtime 
+       image: gcr.io/chmurowiskolab/berealtime 
+       ports: 
+       - containerPort: 3000 
+       env:
+         - name: DBURL
+           value: mongodb://admin:secret@mongo:27017
+         - name: TIMEOUT
+           value: '5000'
+     imagePullSecrets: 
+     - name: SECRET_NAME
 ---
 apiVersion: v1 
 kind: Service 
 metadata: 
-  name: berealtime 
+ name: berealtime 
 spec: 
-  type: LoadBalancer
-  ports: 
-  - port: 3000 
-  selector: 
-    app: berealtime 
+ type: LoadBalancer
+ ports: 
+ - port: 80 
+   targetPort: 3000
+ selector: 
+   app: berealtime 
 ```
  6. Open console and type: <code>kubectl create –f pathToDeploymentFile </code>
  7. Verify status using command: <code>kubectl get pods</code>
