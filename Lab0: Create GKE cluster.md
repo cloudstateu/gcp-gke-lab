@@ -13,3 +13,7 @@
 1. Open the console.cloud.google.com
 2. On left menu choose Kubernetes Engine.
 3. Click clusters and create one cluster with two nodes.
+
+## Task 2: Install GCP SDK:
+1. Open url: https://cloud.google.com/sdk/docs/quickstart-macos
+2. Proceed with instruction and install SDK tools.
