@@ -142,4 +142,5 @@ List of the hosts:
 * <code>asia.gcr.io</code> hosts the images in Asia
 8. Push image to repository by typing in console: 
 * <code> docker push *[HOSTNAME]/[PROJECT-ID]/*/berealtime </code>
+9. Open cloud console and choose from left menu Tools -> Container Registry and check your image there.
 
