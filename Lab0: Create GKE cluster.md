@@ -17,3 +17,8 @@
 ## Task 2: Install GCP SDK:
 1. Open url: https://cloud.google.com/sdk/docs/quickstart-macos
 2. Proceed with instruction and install SDK tools.
+
+## Task 3: Configure credetials to kubernetes CLI
+1. Install kubectl (K8s CLI) from instruction: https://kubernetes.io/docs/tasks/tools/install-kubectl/
+2. Run command: <code>gcloud container clusters get-credentials [CLUSTER_NAME]</code>
+3. Run command: <code>kubectl get nodes</code>
