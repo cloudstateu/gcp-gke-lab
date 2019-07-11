@@ -14,14 +14,22 @@ We will create multitenancy architecture for two tenants with full isolation of 
 
 
 ## Task 1: Create new namespace
-
-1. Open terminal and lunch command: 
-* <code>kubectl create namespace app1</code>
-* <code>kubectl create namespace app2</code>
-2. Set default namespace:
-* <code>kubectl config set-context --current --namespace=app1ns </code>
-3. Validate it
+1. Create deployment file for namespace:
+'''
+apiVersion: v1
+kind: Namespace
+metadata:
+   name: app1-dl-ns
+   labels:
+     project: app1
+'''
+2. Open terminal and lunch command: 
+* <code>kubectl apply -f [PATH_TO_DEPLOYMENT_FILE]</code>
+3. Set default namespace:
+* <code>kubectl config set-context --current --namespace=app1-dl-ns </code>
+4. Validate it
 * <code>kubectl config view | grep namespace:</code>
+5. Create namespace app1-be-ns doing point 1 and 2.
 
 
 ## Task 2: Check resources in namespaces and out of namespaces
@@ -37,7 +45,7 @@ apiVersion: apps/v1beta1
 kind: Deployment 
 metadata: 
   name: mongo
-  namespace: app1ns
+  namespace: app1-dl-ns
 spec: 
   replicas: 1 
   template: 
@@ -60,7 +68,7 @@ apiVersion: v1
 kind: Service 
 metadata: 
   name: mongo 
-  namespace: app1ns
+  namespace: app1-dl-ns
 spec: 
   type: ClusterIP 
   ports: 
@@ -75,7 +83,7 @@ apiVersion: apps/v1beta1
 kind: Deployment 
 metadata: 
  name: berealtime 
- namespace: app2ns
+ namespace: app1-be-ns
 spec: 
  replicas: 1 
  template: 
@@ -100,7 +108,7 @@ apiVersion: v1
 kind: Service 
 metadata: 
  name: berealtime 
- namespace: app2ns
+ namespace: app1-be-ns
 spec: 
  type: LoadBalancer
  ports: 
@@ -124,7 +132,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: app1-policy
-  namespace: app1ns
+  namespace: app1-dl-ns
 spec:
   podSelector: {}
   policyTypes:
@@ -137,9 +145,6 @@ spec:
   - to:
     - namespaceSelector: {}
 ```
-
-
-4. Check logs from berealtime on app2ns. 
 
 
 <center><p>&copy; 2019 Chmurowisko Sp. z o.o.<p></center>
