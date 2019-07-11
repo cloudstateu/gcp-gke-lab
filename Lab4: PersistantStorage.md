@@ -9,8 +9,8 @@
 
 
 ## Task 1: Create PV
-
-1. Create deployment file:
+1. Restart mongo db POD.
+2. Create deployment file:
 ```
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -23,7 +23,7 @@ spec:
     requests:
       storage: 30Gi
 ```
-2. Run deployment file in terminal.
+3. Run deployment file in terminal.
 
 
 ## Task 2: MOdify deployment file for db
