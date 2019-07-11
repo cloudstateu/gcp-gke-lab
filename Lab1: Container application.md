@@ -34,7 +34,7 @@ var bodyParser  = require( 'body-parser');
 ```
 var password = process.env.DB_PASSWORD;
 var username = process.env.DB_USERNAME;
-var dbUrl = "mongodb://".contact(username,':',password,'@',process.env.DBURL);
+var dbUrl = "mongodb://"+username+':'+password+'@'+process.env.DBURL;;
 console.log("DB url",dbUrl);
 var port = 3000;
 var timeout = process.env.TIMEOUT;
