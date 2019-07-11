@@ -168,5 +168,54 @@ affinity:
             - app1-az1
             - app1-az2
  ```
-
+So it will looks like this:
+```
+apiVersion: apps/v1beta1 
+kind: Deployment 
+metadata: 
+ name: berealtime 
+ namespace: app1-be-ns
+spec: 
+ replicas: 1 
+ template: 
+   metadata: 
+     labels: 
+       app: berealtime 
+   spec: 
+    affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: project
+            operator: In
+            values:
+            - app1-az1
+            - app1-az2
+    containers: 
+    - name: berealtime 
+      image: gcr.io/chmurowiskolab/berealtime 
+      ports: 
+      - containerPort: 3000 
+      env:
+        - name: DBURL
+          value: mongodb://admin:secret@mongo:27017
+        - name: TIMEOUT
+          value: '5000'
+    imagePullSecrets: 
+    - name: SECRET_NAME
+---
+apiVersion: v1 
+kind: Service 
+metadata: 
+ name: berealtime 
+ namespace: app1-be-ns
+spec: 
+ type: LoadBalancer
+ ports: 
+ - port: 80 
+   targetPort: 3000
+ selector: 
+   app: berealtime 
+```
 <center><p>&copy; 2019 Chmurowisko Sp. z o.o.<p></center>
