@@ -134,16 +134,22 @@ metadata:
   name: app1-policy
   namespace: app1-dl-ns
 spec:
-  podSelector: {}
+  podSelector: {}       
   policyTypes:
   - Ingress
   - Egress
   ingress:
   - from:
-    - namespaceSelector: {}
+    - namespaceSelector:
+        matchLabels:
+          project: app1
+      podSelector: {}
   egress:
   - to:
-    - namespaceSelector: {}
+    - namespaceSelector:
+        matchLabels: 
+          project: app1
+      podSelector: {}
 ```
 
 
