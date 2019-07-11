@@ -4,7 +4,7 @@
 <br><br>
 <br><br>
 
-# Lab4: Persistant Volumes.
+# Lab3b: Secrets.
 
 ## LAB Overview
 
