@@ -33,7 +33,7 @@ apiVersion: apps/v1beta1
 kind: Deployment 
 metadata: 
   name: mongo
-  namespace: app1ns
+  namespace: app1-dl-ns
 spec: 
   replicas: 1 
   template: 
@@ -64,7 +64,7 @@ apiVersion: v1
 kind: Service 
 metadata: 
   name: mongo 
-  namespace: app1ns
+  namespace: app1-dl-ns
 spec: 
   type: ClusterIP 
   ports: 
