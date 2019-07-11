@@ -32,7 +32,10 @@ var bodyParser  = require( 'body-parser');
 ```
 7. Add code to read environment variables:
 ```
-var dbUrl = process.env.DBURL;
+var password = process.env.DB_PASSWORD;
+var username = process.env.DB_USERNAME;
+var dbUrl = "mongodb://".contact(username,':',password,'@',process.env.DBURL);
+console.log("DB url",dbUrl);
 var port = 3000;
 var timeout = process.env.TIMEOUT;
 ```
@@ -116,7 +119,13 @@ function sendDataToClient(message, client) {
 * Copy package.json: <code>COPY package*.json ./</code>
 * Install dependencies: <code>RUN npm install</code>
 * Bundel app file: <code>COPY . .</code>
-* Create env for MongoDB connection string: <code>ENV DBURL 'mongodb://admin:secret@localhost:27017'</code>
+    
+* Create env for MongoDB connection string: 
+```
+ENV DB_PASSWORD 'secret'
+ENV DB_USERNAME 'admin'
+ENV DBURL 'localhost:27017'
+```
 * Create env for event generation time: <code>ENV TIMEOUT 5000</code>
 * Expose port 3000: <code>EXPOSE 3000</code>
 * Run main proces:<code>ENTRYPOINT [ "node", "index.js" ]</code>
@@ -127,7 +136,7 @@ function sendDataToClient(message, client) {
 18. Run image with command:
 * <code>docker run -e MONGO_INITDB_ROOT_PASSWORD=secret -e MONGO_INITDB_ROOT_USERNAME=admin -p 27017:27017 mongo </code>
 19. Run whole application using command:
-* <code>docker run -e  DBURL=mongodb://admin:secret@localhost:27017' -e TIMEOUT=5000 -p 3000:3000 berealtime</code>
+* <code>docker run -e DB_PASSWORD='secret' -e DB_USERNAME='admin' -e  DBURL='localhost:27017' -e TIMEOUT=5000 -p 3000:3000 berealtime</code>
 
 
 ## TASK 2: Create Container Repository and push image
