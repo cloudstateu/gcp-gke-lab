@@ -98,7 +98,7 @@ spec:
        - containerPort: 3000 
        env:
          - name: DBURL
-           value: mongodb://admin:secret@mongo.app1ns:27017
+           value: mongodb://admin:secret@mongo.app1-dl-ns:27017
          - name: TIMEOUT
            value: '5000'
      imagePullSecrets: 
