@@ -15,14 +15,14 @@ We will create multitenancy architecture for two tenants with full isolation of 
 
 ## Task 1: Create new namespace
 1. Create deployment file for namespace:
-'''
+```
 apiVersion: v1
 kind: Namespace
 metadata:
    name: app1-dl-ns
    labels:
      project: app1
-'''
+```
 2. Open terminal and lunch command: 
 * <code>kubectl apply -f [PATH_TO_DEPLOYMENT_FILE]</code>
 3. Set default namespace:
