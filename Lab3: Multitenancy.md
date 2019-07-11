@@ -117,12 +117,7 @@ spec:
  selector: 
    app: berealtime 
 ```
-3. Click Singin to Azure.
-4. Select your Web Application.
-5. Right-click on the web app in the Azure App Service extension and select the “Deploy to Web App” option.
-6. Set source directory to <code>/dist/fe-visual</code>
-7. Select Yes on the “Are you sure you want to deploy…” dialog to overwrite any previous deployments you may have done to your Azure Web App.
-8. Open your web app URL and check if page is working.
+
 
 ## Task 4: Create network policy
 1. Create app1policy.yml file.
