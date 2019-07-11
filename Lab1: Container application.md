@@ -6,6 +6,26 @@
 # Lab 1: Nodejs container application
 
 ## LAB Overview
+package.json
+```
+{
+  "name": "berealtime",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http": "0.0.0",
+    "mongoose": "^5.6.4",
+    "socket.io": "^2.2.0"
+  }
+}
+```
 
 #### This lab will demonstrate:
 
