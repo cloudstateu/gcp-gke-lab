@@ -30,9 +30,85 @@ We will create multitenancy architecture for two tenants with full isolation of 
 * View all resources out of namespaces: <code>kubectl api-resources --namespaced=false</code>
 
 
-## Task 3: Deploy application to Web App.
-1. Build application using command: <code>ng build</code>
-2. Click on Azure icon in left menu in VS Code.
+## Task 3: Deploy MongoDB to namespace app1ns.
+1. Deploy mongo DB using yml:
+```
+apiVersion: apps/v1beta1 
+kind: Deployment 
+metadata: 
+  name: mongo
+  namespace: app1ns
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        app: mongo 
+    spec: 
+      containers: 
+      - name: mongo 
+        image: mongo 
+        ports: 
+        - containerPort: 27017 
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: admin
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: secret
+---
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: mongo 
+  namespace: app1ns
+spec: 
+  type: ClusterIP 
+  ports: 
+  - port: 27017 
+  selector: 
+    app: mongo 
+```
+2. Check pod and service status.
+3. Create berealtime container in second namespace using yaml:
+```
+apiVersion: apps/v1beta1 
+kind: Deployment 
+metadata: 
+ name: berealtime 
+ namespace: app2ns
+spec: 
+ replicas: 1 
+ template: 
+   metadata: 
+     labels: 
+       app: berealtime 
+   spec: 
+     containers: 
+     - name: berealtime 
+       image: gcr.io/chmurowiskolab/berealtime 
+       ports: 
+       - containerPort: 3000 
+       env:
+         - name: DBURL
+           value: mongodb://admin:secret@mongo.app1ns:27017
+         - name: TIMEOUT
+           value: '5000'
+     imagePullSecrets: 
+     - name: SECRET_NAME
+---
+apiVersion: v1 
+kind: Service 
+metadata: 
+ name: berealtime 
+ namespace: app2ns
+spec: 
+ type: LoadBalancer
+ ports: 
+ - port: 80 
+   targetPort: 3000
+ selector: 
+   app: berealtime 
+```
 3. Click Singin to Azure.
 4. Select your Web Application.
 5. Right-click on the web app in the Azure App Service extension and select the “Deploy to Web App” option.
@@ -43,7 +119,7 @@ We will create multitenancy architecture for two tenants with full isolation of 
 ## Task 4: Create network policy
 1. Create app1policy.yml file.
 2. Copy network policy definition: 
-`
+```
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -60,74 +136,10 @@ spec:
   egress:
   - to:
     - namespaceSelector: {}
-`
+```
 
 
-4. Open file metrics.ts and insert a code: 
-* <code> 
-    export interface Metrics { 
-    public a1: number;
-    public b1: number;
-    public Time: Date;
-}
-</code>
-5. Create a data model class using command:
-* <code>ng g i data</code>
-6. Open file data.ts and insert a code:
-* <code>
-import { Metrics } from './metrics';
-export interface Data {
-     msgType: string;
-     data?: Metrics;
-     error?: any;
-}
-</code>
-7. Install ngx-socket-io using code: <code>npm i ngx-socket-io --save</code>
-8. Copy code from file */lab3-files/app.module.ts* to app.module.ts file.
-9. Copy code from file */lab3-files/app.component.ts* to app.component.ts.
-9. Copy code from file */lab3-files/app.component.html* to app.component.html.
-9. Copy code from file */lab3-files/polyfills.ts* to polyfills.ts.
-10. Build solution.
+4. Check logs from berealtime on app2ns. 
 
-## Task 5: Add deployment slots
-1.	On the Azure Portal, go to the previously created instance of Azure Web App and click on Deployment slots. 
-2.	On the Deployment slot page click on the Add a slot button marked with a plus sign.
-3.	On the Add a slot blade provide below configuration:
-* Name: stage
-* Configuration Source: Don’t clone configuration from an exisiting slot.
-4. Go to VS Code and deploy new solution to deployment stage deployment slot. 
-5. On the Azure Portal go to the Deployment slots and click on created stage slot.
-5. On the stage slot of Azure Web App copy URL link to any web browser.
-14.	Then you should see updated stage ASP.NET MVC application.
-15.	On the Overview page of non-stage production Web App click on Swap.
-16.	On the Swap blade provide the following configurations:
-•	Swap type: Swap
-•	Source: stage
-•	Destination: production
-
-And click OK.
-
-17.	After swapping Web App slots, copy URL link to any web browser.
-
-
-Next click on OK.
-
-## Task 6: Authorize using AAD
-1.	On the Azure Portal, go to the previously created instance of Azure Web App and click on Authentication / Authorization.
-2.	On Authentication / Authorizaton page provide below configuration:
-* App Service Authentication: On.
-* Action to take when request is not authenticated: Log in with Azure Active Directory.
-3.	On Authentication Providers section click on Azure Active Directory, then you will be moved in new page Azure Active Directory Settings.
-4.	On Azure Active Directory Setting page provide below configuration:
-* Management mode: Express
-* Management mode: web-app-student0x
-* Grant Common Data Services Permissions: Off
-And click on OK.
-5. Finally click on Save to saving authorization settings.
-6. Open the web browser in private mode and copy again URL link of Azure Web App.
-7. We will be asked to authenticate using credentials which was used to logging to Azure Portal.
-8. After correct authentication, you should see the running ASP.NET MVC application on Azure Web App.
-
-<br><br>
 
 <center><p>&copy; 2019 Chmurowisko Sp. z o.o.<p></center>
