@@ -26,6 +26,72 @@ package.json
   }
 }
 ```
+index.js
+```
+var mongoose = require('mongoose');
+var express = require('express');
+var bodyParser = require('body-parser');
+var password = process.env.DB_PASSWORD;
+var username = process.env.DB_USERNAME;
+var dbUrl = "mongodb://" + username + ':' + password + '@' + process.env.DBURL;
+console.log("DB url", dbUrl);
+var port = 3000;
+var timeout = process.env.TIMEOUT;
+var app = express();
+var server = app.listen(port, () => {
+    console.log('server is running on port', server.address().port);
+});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+io.attach(server);
+mongoose.connect(dbUrl);
+var Metrics = mongoose.model('Metrics', { a1: Number, b1: Number, Time: Date });
+app.get('/metrics', (req, res) => {
+    Metrics.find({}, (err, messages) => {
+        res.send(messages);
+    });
+});
+var client = [];
+io.on('connection', (socket) => {
+    client.push(socket);
+    console.log('Clent connected', socket);
+});
+initializeDataGeneration(timeout, client);
+
+//Message generation mechanism
+function initializeDataGeneration(timeout, socketClient) {
+    setTimeout(() => {
+        var date = new Date();
+        var message = {
+            a1: Math.random() * 200 + 100,
+            b1: Math.random() * 10 + 230,
+            Time: date.getTime()
+        }
+        var metrics = new Metrics(message, socketClient);
+        metrics.save((err) => {
+            if (err) {
+                console.log('Error occured', error);
+                sendDataToClient({ msgType: 'error', error: err }, socketClient);
+            } else
+                sendDataToClient({ msgType: 'metrics', data: message }, socketClient);
+        });
+        initializeDataGeneration(timeout, socketClient);
+    }, timeout);
+}
+// Send message to client.
+function sendDataToClient(message, client) {
+    if (client) {
+        client.forEach(element => {
+            element.emit('message', JSON.stringify(message));
+            console.log('Message sended to client', client.length, message);
+        });
+        console.log('No client connected');
+    } else
+        console.log('No client connected');
+}
+```
 
 #### This lab will demonstrate:
 
