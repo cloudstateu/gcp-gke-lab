@@ -26,30 +26,56 @@ spec:
 2. Run deployment file in terminal.
 
 
-## Task 2: Create build definition
-1. Click Pipelines -> Builds on left menu.
-2. Click *New pipeline* button.
-3. Choose Azure repository and select your repo.
-4. Select Nodejs with Angular as pipeline configuration.
-5. Add task: *Publish artifact* and choose target path *dist*
-5. Click *Save and run*
+## Task 2: MOdify deployment file for db
 
-## Task 3: Create realese definition
-1. Click Pipelines -> Releases on left menu.
-2. Click *New pipeline* button.
-3. Select template *Azure App Service deployment*.
-4. Click *Add an artifact*.
-5. Select artifact from build.
-6. Click on *1 job* at stage1.
-7. Configure Azure Subsrciption and click *Authorize*
-8. Choose a web app created at lab 3.
-9. Click on *Deploy Azure App Service*
-10. Choose resource group from dropbox.
-11. Select stage deployment slot.
-12. Click *Save*
-13. Go to Pipelines -> Releases
-14. Click *Create a release*
-15. Choose a stage env and click *Start*.
+```
+apiVersion: apps/v1beta1 
+kind: Deployment 
+metadata: 
+  name: mongo
+  namespace: app1ns
+spec: 
+  replicas: 1 
+  template: 
+    metadata: 
+      labels: 
+        app: mongo 
+    spec: 
+      nodeName: gke-standard-cluster-1-default-pool-08cc427a-cdz6
+      containers: 
+      - name: mongo 
+        image: mongo 
+        volumeMounts:
+        - mountPath: "/data/db"
+          name: volume
+        ports: 
+        - containerPort: 27017 
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: admin
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: secret
+        volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: mongo-disk
+---
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: mongo 
+  namespace: app1ns
+spec: 
+  type: ClusterIP 
+  ports: 
+  - port: 27017 
+  selector: 
+    app: mongo 
+ ```
+2. Apply file in terminal.
+
+## Task 3: Check if it works
+1. Restart mongo container.
 
 <br><br>
 
