@@ -151,6 +151,22 @@ spec:
           project: app1
       podSelector: {}
 ```
+## Task 5: Specify nodes for pods.
+1. Label nodes using command:
+<code>kubectl label nodes <node-name> project=app1-az1</code>
+2. Update deployment files and add:
 
+```
+affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: project
+            operator: In
+            values:
+            - app1-az1
+            - app1-az2
+ ```
 
 <center><p>&copy; 2019 Chmurowisko Sp. z o.o.<p></center>
