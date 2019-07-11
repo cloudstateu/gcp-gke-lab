@@ -44,9 +44,21 @@ spec:
       containers:
       - name: mongo
         image: mongo
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: prod-db-secret
+                key: username
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: prod-db-secret
+                key: password
         ports:
         - containerPort: 80
           name: web
+        
         volumeMounts:
         - name: db
           mountPath: /data/db
