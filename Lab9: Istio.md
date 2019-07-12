@@ -3,7 +3,7 @@
 <br><br>
 <br><br>
 
-# Lab4: Istio.
+# Lab9: Istio.
 
 ## Task1: Download istioctl and deploy istio on k8s cluster.
 1. Open page https://github.com/istio/istio/releases and download realease on your os.
