@@ -92,7 +92,11 @@ kube-system    Active    23m
 3. Add the istioctl client to your PATH:
 <code>export PATH=$PWD/bin:$PATH</code>
 
-
+## Task3: Deploy sample app
+1. Deploy the application using kubectl apply and istioctl kube-inject. The kube-inject command updates the BookInfo deployment so that a sidecar is deployed in each application pod along with the service.
+2. Run command:
+<code> kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)</code>
+3. 
 
 <br><br>
 
