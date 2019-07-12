@@ -62,7 +62,7 @@ spec:
 ```
 curl --header "Content-Type: application/json-patch+json" \
 --request PATCH \
---data '[{"op": "add", "path": "/status/capacity/app1pods", "value": "3"}]' \
+--data '[{"op": "add", "path": "/status/capacity/example.com~1app1pods", "value": "3"}]' \
 http://[private-address-to-master-server]/api/v1/nodes/[node-id]/status
 ```
 3. Modify deployment file and add resource quotas:
@@ -89,9 +89,9 @@ spec:
         - containerPort: 80
         resources:
           requests:
-            app1pods: "1"
+            example.com/app1pods: "1"
           limits:
-            app1pods: "1"
+            example.com/app1pods: "1"
 ---
 apiVersion: v1 
 kind: Service 
