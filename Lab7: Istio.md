@@ -82,6 +82,17 @@ istio-system   Active    23m       disabled
 kube-public    Active    23m
 kube-system    Active    23m
 ```
+## Task2: Download istioctl
+1. Open page https://github.com/istio/istio/releases and download realease on your os.
+2. Extract the downloaded installation file. The installation directory contains:
+* Installation .yaml files for Kubernetes in install/
+* Sample applications in samples/
+* The istioctl client binary in the bin/ directory. istioctl is used when manually injecting Envoy as a sidecar proxy and for creating routing rules and policies.
+* The istio.VERSION configuration file
+3. Add the istioctl client to your PATH:
+<code>export PATH=$PWD/bin:$PATH</code>
+
+
 
 <br><br>
 
