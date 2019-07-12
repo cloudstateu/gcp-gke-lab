@@ -4,7 +4,7 @@
 <br><br>
 <br><br>
 
-# Lab4: Pod Lifecycle.
+# Lab7: Pod Lifecycle.
 
 ## Task1: Download istioctl and deploy istio on k8s cluster.
  In this exercise, you create a Pod that runs a Container based on the k8s.gcr.io/busybox image and add probes to it.
